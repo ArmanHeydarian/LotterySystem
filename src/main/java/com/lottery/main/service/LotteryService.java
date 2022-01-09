@@ -33,8 +33,7 @@ public class LotteryService {
     public ResponseEntity<String> addLottery(LotteryDto lotteryDto) throws Exception
     {
         Lottery lottery = jacksonObjectMapper.convertValue(lotteryDto, new TypeReference<Lottery>(){});
-        Date date =new Date();
-        lottery.setCreateDate(date);
+        lottery.setCreateDate(new Date());
         lotteryRepository.save(lottery);
         return ResponseEntity.ok("Lottery Saved Successfully");
     }

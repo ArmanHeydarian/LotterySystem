@@ -12,8 +12,8 @@ import com.lottery.main.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import java.util.Date;
-import java.util.Optional;
+
+import java.util.*;
 
 @Service
 public class ParticipateService {
@@ -26,11 +26,10 @@ public class ParticipateService {
     @Autowired
     private ObjectMapper jacksonObjectMapper;
 
-    public ResponseEntity<String> addUserBallot(UserBallotDto userBallotDto , String userName) throws Exception
-    {
-        UserBallot userBallot= jacksonObjectMapper.convertValue(userBallotDto, new TypeReference<UserBallot>(){});
-        Date date =new Date();
-        userBallot.setCreateDate(date);
+    public ResponseEntity<String> addUserBallot(UserBallotDto userBallotDto, String userName) throws Exception {
+
+        UserBallot userBallot = jacksonObjectMapper.convertValue(userBallotDto, new TypeReference<UserBallot>() {});
+        userBallot.setCreateDate(new Date());
 
         //Find Lottery by Id and Add it to UserBallot Model
         Optional<Lottery> lottery = lotteryRepository.findById(userBallotDto.getLotteryId());
@@ -39,18 +38,72 @@ public class ParticipateService {
         else
             return ResponseEntity.badRequest().body("Lottery Id was not found");
 
-        //Find User by Id and Add it to Rate Model
+        //------------------------------------
+        //Find User by Id and Add it to UserBallot Model
         User user = userRepository.findByUsername(userName);
         if (user != null)
             userBallot.setUser(user);
         else
             return ResponseEntity.badRequest().body("User Id was not found");
 
-        // Add requested lotteryRate to poductRateRepository
-        userBallotRepository.save(userBallot);
+        // Check Condition of Ballot
+        int[] ArrNumbers = convertToSortedArray(userBallotDto.getNumberList());
+        Boolean Duplication = checkDuplicateInNumberList(ArrNumbers);
+        Boolean isLengthCorrect = checkLengthOfUserNumberList(ArrNumbers, userBallot.getLottery().getBallotLength());
+        Boolean isRangeCorrect = checkRangeOfUserNumberList(ArrNumbers , 1, 50);
+        if (!isLengthCorrect)
+            return ResponseEntity.ok("Ballot Length is not correct ");
+        if (Duplication)
+            return ResponseEntity.ok("Ballot contains some duplicated numbers ");
+        if (!isRangeCorrect)
+            return ResponseEntity.ok("Ballot number Range exceed");
 
-        return ResponseEntity.ok("Rate Saved Successfully");
+        userBallot.setNumberList(String.join(",", Arrays.toString(ArrNumbers)));
+        userBallotRepository.save(userBallot);
+        return ResponseEntity.ok("Ballot Saved Successfully");
     }
+
+    private int[] convertToSortedArray(String input) throws Exception {
+        //Sorting Number List Ascending
+        int[] strNumberSplit = Arrays.stream(input.split(","))
+                .mapToInt(Integer::parseInt).toArray();
+        Arrays.sort(strNumberSplit);
+        return strNumberSplit;
+        //Checking Duplicate Numbers
+
+    }
+
+    public Boolean checkDuplicateInNumberList(int[] input) throws Exception {
+        int prev = -1;
+        // Check duplicates for every array element
+        for (int e : input) {
+            // if two consecutive elements are found to be equal, so a duplicate is found
+            if (e == prev) {
+                return true;
+            }
+            // set the current element as previous
+            prev = e;
+        }
+        // no duplicate is found
+        return false;
+    }
+
+    private Boolean checkLengthOfUserNumberList(int[] input, int ExpectedLength) throws Exception {
+        if (input.length > ExpectedLength || input.length < ExpectedLength)
+            return false;
+        else
+            return true;
+    }
+
+    private Boolean checkRangeOfUserNumberList(int[] input, int min ,int max) throws Exception {
+        for (int e : input)
+        {
+            if (e > max || e < min)
+                return false;
+        }
+        return true;
+    }
+
 
 
 

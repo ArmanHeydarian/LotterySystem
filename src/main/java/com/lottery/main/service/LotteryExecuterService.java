@@ -14,10 +14,15 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-@Service
-public class LotteryExecuter {
+
+@Component
+public class LotteryExecuterService {
+
     @Autowired
     LotteryService lotteryService;
+    @Autowired
+    WiningBallotService winingBallotService;
+
 
     @PostConstruct
     public void init() throws Exception
@@ -36,8 +41,8 @@ public class LotteryExecuter {
         }
         // Scheduling the tasks
         for (Lottery lottery : lotteryList)
-            scheduler.scheduleAtFixedRate(new LotteryExecuterTask(lottery),1,4,	TimeUnit.SECONDS);
-//		scheduler.scheduleAtFixedRate(new LotteryExecuterTask(),delayTime,TimeUnit.DAYS.toMinutes(1),	TimeUnit.MINUTES);
+            scheduler.scheduleAtFixedRate(new LotteryExecuterTask(lottery, winingBallotService ),1,10,	TimeUnit.SECONDS);
+//scheduler.scheduleAtFixedRate(new LotteryExecuterTask(),delayTime,TimeUnit.DAYS.toMinutes(1),	TimeUnit.MINUTES);
 
     }
 }
