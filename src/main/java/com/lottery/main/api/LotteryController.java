@@ -1,6 +1,6 @@
 package com.lottery.main.api;
 
-
+//----------
 import com.lottery.main.domain.dto.LotteryDto;
 import com.lottery.main.domain.dto.UserBallotDto;
 import com.lottery.main.domain.model.Lottery;
