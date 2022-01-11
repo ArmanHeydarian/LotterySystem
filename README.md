@@ -42,7 +42,7 @@ there are many good Ideas that have made this project extensible and reliable li
 * note: To get an overview of the structure and architecture please have a look at the Design folder content inside Zip file.
 
 ### Hope it will be satisfying :)
-#### Feel free to ask any question regarding running.
+#### Feel free to ask any question regarding running the project.
 #### Arman.heydarian@gmail.com
 
 Best Regards.
