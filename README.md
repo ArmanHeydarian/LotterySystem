@@ -30,14 +30,14 @@ In order to start the project please follow the Instructions below :\
 
 ## Outstanding Features and Interesting Specifications in Implementation:
 there are many good Ideas that have made this project extensible and reliable like:
-####1- Domain Driven Design 
-####2- Solid and Clean Code
-####3- Multi Layers Structure working around a Core Domain
-####4- Comprehensive Backend: Restfull Api set for Managing Lotteries, User (Participants), Ballots and Winning Ballots
-####5- RealTime Draw: Executor Service runs the many draws at every midnight parallel (MultiThreading approach)
-####6- Optimised Winning-Ballot Generator for generating Random, Unique WinningBallots regarding on lottery specifications.
-####7- Robust Security Layer by using Spring Security and JWT
-####8- Swagger Ui for testing the APIs easily 
+#### 1- Domain Driven Design 
+#### 2- Solid and Clean Code
+#### 3- Multi Layers Structure working around a Core Domain
+#### 4- Comprehensive Backend: Restfull Api set for Managing Lotteries, User (Participants), Ballots and Winning Ballots
+#### 5- RealTime Draw: Executor Service runs the many draws at every midnight parallel (MultiThreading approach)
+#### 6- Optimised Winning-Ballot Generator for generating Random, Unique WinningBallots regarding on lottery specifications.
+#### 7- Robust Security Layer by using Spring Security and JWT
+#### 8- Swagger Ui for testing the APIs easily 
 
 * note: To get an overview of the structure and architecture please have a look at the Design folder content inside Zip file.
 
