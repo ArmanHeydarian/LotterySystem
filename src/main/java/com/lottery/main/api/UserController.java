@@ -21,38 +21,13 @@ public class UserController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
-
     @Autowired
     private JwtUserDetailsService userDetailsService;
-
     @Autowired
     private UserService userService;
-
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
-
     private static final Logger logger = LogManager.getLogger(UserController.class);
-
-    @RequestMapping(value = "/auth", method = RequestMethod.POST)
-    public ResponseEntity<?> auth(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
-        // First step checks user credential
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword()));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Incorrect Username and Password");
-        }
-
-        // If User exists then Generate a new JWT token and send it to user
-        try {
-            final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-            final String token = jwtTokenUtil.generateToken(userDetails);
-            return ResponseEntity.ok(new AuthenticatonResponse(token));
-        } catch (Exception e) {
-            logger.warn("Something went wrong :" + e.getMessage());
-            return ResponseEntity.badRequest().body("Something went wrong in token generating part");
-        }
-
-    }
 
     //----------------------------------------------------------------------------------------
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
@@ -86,7 +61,28 @@ public class UserController {
         catch (Exception e) {
             logger.warn("Something went wrong :" + e.getMessage());
             return ResponseEntity.badRequest().body("Something went wrong :" + e.getMessage());
-
         }
     }
+    //----------------------------------------------------------------------------------------
+
+    @RequestMapping(value = "/signin", method = RequestMethod.POST)
+    public ResponseEntity<?> signIn(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+        // First step checks user credential
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword()));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Incorrect Username and Password");
+        }
+        // If User exists then Generate a new JWT token and send it to user
+        try {
+            final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+            final String token = jwtTokenUtil.generateToken(userDetails);
+            return ResponseEntity.ok(new AuthenticatonResponse(token));
+        } catch (Exception e) {
+            logger.warn("Something went wrong :" + e.getMessage());
+            return ResponseEntity.badRequest().body("Something went wrong in token generating part");
+        }
+
+    }
+
 }

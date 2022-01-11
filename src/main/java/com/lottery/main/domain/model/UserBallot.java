@@ -3,6 +3,8 @@ package com.lottery.main.domain.model;
 
 import javax.persistence.*;
 import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 
 @Entity
@@ -15,6 +17,19 @@ public class UserBallot {
 
     @NotNull
     private String numberList;
+
+    @NotNull
+    private Date createDate;
+
+    @ManyToOne
+    @JoinColumn(name = "lottery_id")
+    Lottery lottery;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    User user;
+
 
     public int getId() {
         return id;
@@ -55,15 +70,4 @@ public class UserBallot {
     public void setUser(User user) {
         this.user = user;
     }
-
-    @NotNull
-    private Date createDate;
-
-    @ManyToOne
-    @JoinColumn(name = "lottery_id")
-    Lottery lottery;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    User user;
 }

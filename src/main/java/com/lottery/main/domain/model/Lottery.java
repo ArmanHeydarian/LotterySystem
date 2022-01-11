@@ -17,19 +17,14 @@ public class Lottery {
 
     @NotNull
     private String title;
-
-    private String description;
-
     @NotNull
     private long BallotPrice;
-
-    private boolean isBlocked;
-
-    private int ballotLength;
-
     @NotNull
     private Date createDate;
-
+    private String description;
+    private int ballotLength;
+    private int minNumber;
+    private int maxNumber;
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "lottery" , cascade = { CascadeType.ALL } )
@@ -76,13 +71,6 @@ public class Lottery {
         BallotPrice = ballotPrice;
     }
 
-    public boolean isBlocked() {
-        return isBlocked;
-    }
-
-    public void setBlocked(boolean blocked) {
-        isBlocked = blocked;
-    }
 
     public int getBallotLength() {
         return ballotLength;
@@ -125,4 +113,22 @@ public class Lottery {
     public void setUserBallots(List<UserBallot> userBallots) {
         this.userBallots = userBallots;
     }
+
+
+    public int getMinNumber() {
+        return minNumber;
+    }
+
+    public void setMinNumber(int minNumber) {
+        this.minNumber = minNumber;
+    }
+
+    public int getMaxNumber() {
+        return maxNumber;
+    }
+
+    public void setMaxNumber(int maxNumber) {
+        this.maxNumber = maxNumber;
+    }
+
 }

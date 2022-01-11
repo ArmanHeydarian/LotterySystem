@@ -25,7 +25,6 @@ public class LotteryController {
     @Autowired
     private JwtUserDetailsService jwtUserDetailsService;
     private static final Logger logger = LogManager.getLogger(LotteryController.class);
-
     //--------------------------------------------------------------------
     @PostMapping(value = "/add")
     public @ResponseBody  ResponseEntity<String> addNewLottery(@RequestBody LotteryDto newLottery) {
@@ -39,7 +38,7 @@ public class LotteryController {
     }
     //-----------------------------------------------------------------------------------
     @GetMapping(value = "/getall")
-    public ResponseEntity<List<Lottery>> getAllLottery() {
+    public ResponseEntity<List<Lottery>> getAllLotteries() {
         try {
             List<Lottery> list  = lotteryService.getAllLotteries();
             return new ResponseEntity(list, HttpStatus.OK);
@@ -62,9 +61,9 @@ public class LotteryController {
     }
     //--------------------------------------------------------------------------------------
     @PutMapping(value = "/edit")
-    public ResponseEntity<String>  editLottery(@RequestParam int lotteryId) {
+    public ResponseEntity<String>  editLottery(@RequestParam int lotteryId ,@RequestBody LotteryDto newLotteryDto) {
         try {
-            return lotteryService.editLottery(lotteryId);
+            return lotteryService.editLottery(lotteryId , newLotteryDto);
         }
         catch (Exception e) {
             logger.warn("Something went wrong :" + e.getMessage());

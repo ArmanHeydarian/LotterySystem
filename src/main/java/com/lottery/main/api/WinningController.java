@@ -24,14 +24,13 @@ public class WinningController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
-
     @Autowired
     private WinningBallotService winningBallotService;
 
     private static final Logger logger = LogManager.getLogger(WinningController.class);
     //-----------------------------------------------------------------------------------
-    @GetMapping(value = "/getWinningBallot")
-    public ResponseEntity<List<WiningBallot>> getWinningBallot(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  Date date) {
+    @GetMapping(value = "/getWinningBallots")
+    public ResponseEntity<List<WiningBallot>> getWinningBallots(@RequestParam("date") @DateTimeFormat(fallbackPatterns = {  "yyyy-MM-dd" })  Date date) {
         try {
             List<WiningBallot> list  = winningBallotService.getWiningBallotByDate(date);
             return new ResponseEntity<List<WiningBallot>>(list, HttpStatus.OK);
@@ -41,8 +40,6 @@ public class WinningController {
             return ResponseEntity.badRequest().body(null);
         }
     }
-
-
 
 
 }

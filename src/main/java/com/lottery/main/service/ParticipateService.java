@@ -6,6 +6,7 @@ import com.lottery.main.domain.dto.UserBallotDto;
 import com.lottery.main.domain.model.Lottery;
 import com.lottery.main.domain.model.UserBallot;
 import com.lottery.main.domain.model.User;
+import com.lottery.main.domain.model.WiningBallot;
 import com.lottery.main.repository.LotteryRepository;
 import com.lottery.main.repository.UserBallotRepository;
 import com.lottery.main.repository.UserRepository;
@@ -26,7 +27,16 @@ public class ParticipateService {
     @Autowired
     private ObjectMapper jacksonObjectMapper;
     //--------------------------------------------------------------------
-
+    public List<UserBallot> getUserBallot(String userName)
+    {
+        //Find User by ID and Add it to UserBallot Model
+        User user = userRepository.findByUsername(userName);
+        if (user != null)
+            return userBallotRepository.findByUserId(user.getId());
+        else
+            return null;
+    }
+    //--------------------------------------------------------------------
     public ResponseEntity<String> addUserBallot(UserBallotDto userBallotDto, String userName) throws Exception {
 
         UserBallot userBallot = jacksonObjectMapper.convertValue(userBallotDto, new TypeReference<UserBallot>() {});
@@ -50,7 +60,7 @@ public class ParticipateService {
         int[] ArrNumbers = convertToSortedArray(userBallotDto.getNumberList());
         Boolean Duplication = checkDuplicateInNumberList(ArrNumbers);
         Boolean isLengthCorrect = checkLengthOfUserNumberList(ArrNumbers, userBallot.getLottery().getBallotLength());
-        Boolean isRangeCorrect = checkRangeOfUserNumberList(ArrNumbers , 1, 50);
+        Boolean isRangeCorrect = checkRangeOfUserNumberList(ArrNumbers , lottery.get().getMinNumber(), lottery.get().getMaxNumber());
         if (!isLengthCorrect)
             return ResponseEntity.ok("Ballot Length is not correct ");
         if (Duplication)

@@ -39,14 +39,19 @@ public class LotteryService {
         return ResponseEntity.ok("Lottery Saved Successfully");
     }
     //----------------------------------------------- -------------------------------------
-    public ResponseEntity<String> editLottery (int lotteryId) throws RuntimeException
+    public ResponseEntity<String> editLottery (int lotteryId , LotteryDto newLotteryDto) throws RuntimeException
     {
         Optional<Lottery> lottery = lotteryRepository.findById(lotteryId);
         if (lottery != null)
         {
-            lottery.get().setBlocked(true);
+            lottery.get().setTitle(newLotteryDto.getTitle());
+            lottery.get().setDescription(newLotteryDto.getDescription());
+            lottery.get().setBallotLength(newLotteryDto.getBallotLength());
+            lottery.get().setBallotPrice(newLotteryDto.getBallotPrice());
+            lottery.get().setMinNumber(newLotteryDto.getMinNumber());
+            lottery.get().setMaxNumber(newLotteryDto.getMaxNumber());
             lotteryRepository.save(lottery.get());
-            return ResponseEntity.ok("lottery Has Been Updated Successfully");
+            return ResponseEntity.ok("lottery  Updated Successfully");
         }
         else
             return ResponseEntity.badRequest().body("lottery Id Not Found");
@@ -59,7 +64,7 @@ public class LotteryService {
 
     public ResponseEntity<String> deleteLottery(int lotteryId) throws Exception {
         lotteryRepository.deleteById(lotteryId);
-        return ResponseEntity.ok("Lottery Has Been Deleted Successfully");
+        return ResponseEntity.ok("Lottery  Deleted Successfully");
 
     }
     //------------------------------------------------------------------------------------

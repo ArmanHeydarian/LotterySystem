@@ -36,7 +36,7 @@ public class UserService {
         {
             user.get().setBlocked(true);
             userRepository.save(user.get());
-            return ResponseEntity.ok("User Has Been Blocked Successfully");
+            return ResponseEntity.ok("User Blocked Successfully");
         }
         else
             return ResponseEntity.badRequest().body("User Id Not Found");
@@ -49,7 +49,7 @@ public class UserService {
         {
             user.get().setBlocked(false);
             userRepository.save(user.get());
-            return ResponseEntity.ok("User Has Been UnBlocked Successfully");
+            return ResponseEntity.ok("User UnBlocked Successfully");
         }
         else
             return ResponseEntity.badRequest().body("User Id Not Found");

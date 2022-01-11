@@ -40,7 +40,8 @@ public class LotteryExecuterService {
         }
         // Scheduling the tasks
         for (Lottery lottery : lotteryList)
-            scheduler.scheduleAtFixedRate(new LotteryExecuterTask(lottery, winningBallotService),1,10,	TimeUnit.SECONDS);
-            //scheduler.scheduleAtFixedRate(new LotteryExecuterTask(),delayTime,TimeUnit.DAYS.toMinutes(1),	TimeUnit.MINUTES);
+            scheduler.scheduleAtFixedRate(new LotteryExecuterTask(lottery, winningBallotService),delayTime,TimeUnit.DAYS.toMinutes(1),TimeUnit.MINUTES);
+
+        //test per 10 second: scheduler.scheduleAtFixedRate(new LotteryExecuterTask(lottery, winningBallotService),1,10,TimeUnit.SECONDS);
     }
 }

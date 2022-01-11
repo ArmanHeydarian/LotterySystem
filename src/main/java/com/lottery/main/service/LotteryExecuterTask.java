@@ -17,15 +17,13 @@ public class LotteryExecuterTask implements Runnable {
     private WiningBallotDto winingBallotDto;
     private List<Integer> randomList;
 
-
+    //----------------------------------------------------------------------------------------
     public LotteryExecuterTask(Lottery lottery, WinningBallotService winningBallotService) {
         this.lottery = lottery;
         this.winningBallotService = winningBallotService;
         this.randomList = new ArrayList<>();
-
     }
-
-
+    //----------------------------------------------------------------------------------------
     public void run() {
          try {
             GenerateRandomNumbers();
@@ -36,10 +34,10 @@ public class LotteryExecuterTask implements Runnable {
         }
         logger.info(lottery.getTitle() + " : " + randomList.toString());
     }
-
+    //----------------------------------------------------------------------------------------
     public void GenerateRandomNumbers() throws Exception{
-        int min = 1;
-        int max = 50;
+        int min = lottery.getMinNumber();
+        int max = lottery.getMaxNumber();
         randomList = new ArrayList<>();
         for (int i = 0; i < lottery.getBallotLength(); i++) {
             //Generate random double value from min to max
@@ -53,7 +51,7 @@ public class LotteryExecuterTask implements Runnable {
         }
         Collections.sort(randomList);
     }
-
+    //----------------------------------------------------------------------------------------
     private void GenerateAndPersistWiningBallot() throws Exception {
         // creates the WinningBallot to persist on DataBase
         winingBallotDto = new WiningBallotDto() {{

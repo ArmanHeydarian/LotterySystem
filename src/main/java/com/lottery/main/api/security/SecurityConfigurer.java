@@ -30,7 +30,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests()
-                .antMatchers("/api/user/auth" ,"/api/user/signup","/api/lottery/getall",
+                .antMatchers("/api/user/signin" ,"/api/user/signup","/api/lottery/getall" ,"/api/winning/getWinningBallots" ,
                         "/swagger-ui.html",  "/v2/api-docs/**", "/webjars/springfox-swagger-ui/**", //swagger path is accessible
                         "/swagger-resources/**" ).permitAll().
                 antMatchers( "/api/lottery/add", "/api/lottery/delete", "/api/lottery/edit", "/api/user/blockuser",  "/api/user/unblockuser").hasAnyAuthority("ADMIN","admin").anyRequest().authenticated()

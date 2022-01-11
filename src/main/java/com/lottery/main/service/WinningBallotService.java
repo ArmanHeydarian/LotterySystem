@@ -43,8 +43,8 @@ public class WinningBallotService {
 
     public List<WiningBallot>  getWiningBallotByDate(Date date)
     {
-        List<WiningBallot> winingBallot = winingBallotRepository.findByCreateDate(date);
-        return winingBallot;
+        List<WiningBallot> winingBallotList = winingBallotRepository.findByCreateDate(date);
+        return winingBallotList;
     }
 
 }

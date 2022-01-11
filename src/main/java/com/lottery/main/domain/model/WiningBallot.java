@@ -47,6 +47,8 @@ public class WiningBallot {
     @NotNull
     private String winingNumberList;
 
+    @NotNull
+    @Temporal(TemporalType.DATE)
     private Date createDate;
 
     @ManyToOne
