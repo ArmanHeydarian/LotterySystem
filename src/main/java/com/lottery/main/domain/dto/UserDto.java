@@ -11,7 +11,6 @@ public class UserDto {
 
     private String username;
     private String password;
-    private boolean isBlocked;
     private String role;
 
     public String getUsername() {
@@ -30,13 +29,6 @@ public class UserDto {
         this.password = password;
     }
 
-    public boolean isBlocked() {
-        return isBlocked;
-    }
-
-    public void setBlocked(boolean blocked) {
-        isBlocked = blocked;
-    }
 
     public String getRole() {
         return role;

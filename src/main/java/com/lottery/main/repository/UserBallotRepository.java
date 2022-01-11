@@ -1,4 +1,4 @@
-package com.lottery.main.domain.repository;
+package com.lottery.main.repository;
 
 import com.lottery.main.domain.model.UserBallot;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -30,9 +30,10 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests()
-                .antMatchers("/api/user/auth" ,"/api/user/signup",
+                .antMatchers("/api/user/auth" ,"/api/user/signup","/api/lottery/getall",
                         "/swagger-ui.html",  "/v2/api-docs/**", "/webjars/springfox-swagger-ui/**", //swagger path is accessible
-                        "/swagger-resources/**" ).permitAll().antMatchers( "/api/participate/add" , "/api/user/blockuser",  "/api/user/unblockuser").hasAuthority("ADMIN").anyRequest().authenticated()
+                        "/swagger-resources/**" ).permitAll().
+                antMatchers( "/api/lottery/add", "/api/lottery/delete", "/api/lottery/edit", "/api/user/blockuser",  "/api/user/unblockuser").hasAnyAuthority("ADMIN","admin").anyRequest().authenticated()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

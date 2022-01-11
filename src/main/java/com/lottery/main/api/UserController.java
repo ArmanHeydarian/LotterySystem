@@ -6,6 +6,8 @@ import com.lottery.main.domain.dto.AuthenticatonResponse;
 import com.lottery.main.domain.dto.UserDto;
 import com.lottery.main.service.JwtUserDetailsService;
 import com.lottery.main.service.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,6 +31,8 @@ public class UserController {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
+    private static final Logger logger = LogManager.getLogger(UserController.class);
+
     @RequestMapping(value = "/auth", method = RequestMethod.POST)
     public ResponseEntity<?> auth(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
         // First step checks user credential
@@ -44,6 +48,7 @@ public class UserController {
             final String token = jwtTokenUtil.generateToken(userDetails);
             return ResponseEntity.ok(new AuthenticatonResponse(token));
         } catch (Exception e) {
+            logger.warn("Something went wrong :" + e.getMessage());
             return ResponseEntity.badRequest().body("Something went wrong in token generating part");
         }
 
@@ -56,6 +61,7 @@ public class UserController {
             return userService.addUserToDb(userDto);
         }
         catch (Exception e) {
+            logger.warn("Something went wrong :" + e.getMessage());
             return ResponseEntity.badRequest().body("Something went wrong :" + e.getMessage());
         }
     }
@@ -66,6 +72,7 @@ public class UserController {
             return userService.blockUser(userId);
         }
         catch (Exception e) {
+            logger.warn("Something went wrong :" + e.getMessage());
             return ResponseEntity.badRequest().body("Something went wrong :" + e.getMessage());
 
         }
@@ -77,6 +84,7 @@ public class UserController {
             return userService.unBlockUser(userId);
         }
         catch (Exception e) {
+            logger.warn("Something went wrong :" + e.getMessage());
             return ResponseEntity.badRequest().body("Something went wrong :" + e.getMessage());
 
         }

@@ -31,16 +31,16 @@ public class Lottery {
     private Date createDate;
 
 
-    //@JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "lottery" )
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "lottery" , cascade = { CascadeType.ALL } )
     private List<WiningBallot> winingBallots;
 
-
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "lottery" )
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "lottery" , cascade = { CascadeType.ALL } )
     private List<UserBallot> userBallots;
 
-
-    @OneToMany(fetch = FetchType.LAZY,  mappedBy = "lottery")
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY,  mappedBy = "lottery", cascade = { CascadeType.ALL } )
     private List<LotteryComment> lotteryComments ;
 
 

@@ -3,7 +3,6 @@ package com.lottery.main.service;
 import com.lottery.main.domain.model.Lottery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
@@ -21,7 +20,7 @@ public class LotteryExecuterService {
     @Autowired
     LotteryService lotteryService;
     @Autowired
-    WiningBallotService winingBallotService;
+    WinningBallotService winningBallotService;
 
 
     @PostConstruct
@@ -41,8 +40,7 @@ public class LotteryExecuterService {
         }
         // Scheduling the tasks
         for (Lottery lottery : lotteryList)
-            scheduler.scheduleAtFixedRate(new LotteryExecuterTask(lottery, winingBallotService ),1,10,	TimeUnit.SECONDS);
-//scheduler.scheduleAtFixedRate(new LotteryExecuterTask(),delayTime,TimeUnit.DAYS.toMinutes(1),	TimeUnit.MINUTES);
-
+            scheduler.scheduleAtFixedRate(new LotteryExecuterTask(lottery, winningBallotService),1,10,	TimeUnit.SECONDS);
+            //scheduler.scheduleAtFixedRate(new LotteryExecuterTask(),delayTime,TimeUnit.DAYS.toMinutes(1),	TimeUnit.MINUTES);
     }
 }

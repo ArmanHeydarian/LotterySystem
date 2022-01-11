@@ -1,4 +1,4 @@
-package com.lottery.main.domain.repository;
+package com.lottery.main.repository;
 
 import com.lottery.main.domain.model.User;
 import org.springframework.data.repository.CrudRepository;

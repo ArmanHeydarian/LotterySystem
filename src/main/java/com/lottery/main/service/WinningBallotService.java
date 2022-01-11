@@ -5,18 +5,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lottery.main.domain.dto.WiningBallotDto;
 import com.lottery.main.domain.model.Lottery;
 import com.lottery.main.domain.model.WiningBallot;
-import com.lottery.main.domain.repository.LotteryRepository;
-import com.lottery.main.domain.repository.WiningBallotRepository;
+import com.lottery.main.repository.LotteryRepository;
+import com.lottery.main.repository.WiningBallotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
-public class WiningBallotService {
+public class WinningBallotService {
     @Autowired
     private WiningBallotRepository winingBallotRepository;
     @Autowired
@@ -30,6 +30,7 @@ public class WiningBallotService {
         Optional<Lottery> lottery = lotteryRepository.findById(winingBallotDto.getLotteryId());
         if (lottery != null)
         {
+
             winingBallot.setLottery(lottery.get());
          }
         else
@@ -40,9 +41,9 @@ public class WiningBallotService {
         return ResponseEntity.ok("winingBallot Saved Successfully");
     }
 
-    public Optional<WiningBallot>  getWiningBallotById(int winingBallotId)
+    public List<WiningBallot>  getWiningBallotByDate(Date date)
     {
-        Optional<WiningBallot> winingBallot = winingBallotRepository.findById(winingBallotId);
+        List<WiningBallot> winingBallot = winingBallotRepository.findByCreateDate(date);
         return winingBallot;
     }
 

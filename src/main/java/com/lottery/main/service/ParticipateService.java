@@ -6,9 +6,9 @@ import com.lottery.main.domain.dto.UserBallotDto;
 import com.lottery.main.domain.model.Lottery;
 import com.lottery.main.domain.model.UserBallot;
 import com.lottery.main.domain.model.User;
-import com.lottery.main.domain.repository.LotteryRepository;
-import com.lottery.main.domain.repository.UserBallotRepository;
-import com.lottery.main.domain.repository.UserRepository;
+import com.lottery.main.repository.LotteryRepository;
+import com.lottery.main.repository.UserBallotRepository;
+import com.lottery.main.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -25,21 +25,21 @@ public class ParticipateService {
     private LotteryRepository lotteryRepository;
     @Autowired
     private ObjectMapper jacksonObjectMapper;
+    //--------------------------------------------------------------------
 
     public ResponseEntity<String> addUserBallot(UserBallotDto userBallotDto, String userName) throws Exception {
 
         UserBallot userBallot = jacksonObjectMapper.convertValue(userBallotDto, new TypeReference<UserBallot>() {});
         userBallot.setCreateDate(new Date());
 
-        //Find Lottery by Id and Add it to UserBallot Model
+        //Find Lottery by ID and Add it to UserBallot Model
         Optional<Lottery> lottery = lotteryRepository.findById(userBallotDto.getLotteryId());
         if (lottery != null)
             userBallot.setLottery(lottery.get());
         else
             return ResponseEntity.badRequest().body("Lottery Id was not found");
 
-        //------------------------------------
-        //Find User by Id and Add it to UserBallot Model
+        //Find User by ID and Add it to UserBallot Model
         User user = userRepository.findByUsername(userName);
         if (user != null)
             userBallot.setUser(user);

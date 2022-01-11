@@ -1,11 +1,12 @@
 package com.lottery.main.api;
 
-
 import com.lottery.main.domain.dto.UserBallotDto;
-import com.lottery.main.domain.dto.WiningBallotDto;
+import com.lottery.main.service.JwtUserDetailsService;
 import com.lottery.main.service.ParticipateService;
-import com.lottery.main.service.WiningBallotService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,30 +19,27 @@ public class ParticipateController {
 
     @Autowired
     private ParticipateService participateService;
+    @Autowired
+    private JwtUserDetailsService jwtUserDetailsService;
+    private static final Logger logger = LogManager.getLogger(ParticipateController.class);
 
-
-
+    //--------------------------------------------------------------------
     @PostMapping(value = "/addNewUserBallot")
-    public @ResponseBody ResponseEntity<String> addNewUserBallot(@RequestBody UserBallotDto userBallotDto) {
-        Authentication authentication;
-        // Get User Name for finding User Entity by name
-        try {
-            authentication = SecurityContextHolder.getContext().getAuthentication();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("User is not authenticate");
-        }
+    public @ResponseBody ResponseEntity<String> addNewUserBallot(@RequestBody UserBallotDto userBallotDto)  {
 
-        if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            // Add new Rate to Repository and then Database
+        // Find User Entity by name
+        ResponseEntity<String> UserEntityResponse= jwtUserDetailsService.findUserNameInContext();
+        if (UserEntityResponse.getStatusCode() ==  HttpStatus.OK) {
+            // Add new Ballot to Repository for persisting in Database
             try {
-                return participateService.addUserBallot(userBallotDto, authentication.getName());
+                return participateService.addUserBallot(userBallotDto,UserEntityResponse.getBody() );
             }
             catch (Exception e)
             {
+                logger.warn("Something went wrong :" + e.getMessage());
                 return ResponseEntity.badRequest().body("Something went wrong: " + e.getMessage());
             }
         }
-
         return ResponseEntity.badRequest().body("User is not authenticated");
     }
 }

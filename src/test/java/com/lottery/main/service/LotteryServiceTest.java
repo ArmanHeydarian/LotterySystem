@@ -1,81 +1,62 @@
 package com.lottery.main.service;
 
-import com.lottery.main.api.security.JwtTokenUtil;
-import com.lottery.main.domain.dto.LotteryDto;
-import com.lottery.main.domain.repository.LotteryRepository;
+import com.lottery.main.domain.model.Lottery;
+import com.lottery.main.repository.LotteryRepository;
+import com.lottery.main.service.LotteryService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.web.client.RestTemplate;
-
+import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
-@ExtendWith(SpringExtension.class)
-@WebMvcTest(LotteryService.class)
+@RunWith(SpringRunner.class)
+@SpringBootTest
 class LotteryServiceTest {
 
     @Autowired
-    MockMvc mockMvc;
-    @MockBean
     LotteryService lotteryService;
 
     @MockBean
-    JwtUserDetailsService jwtUserDetailsService;
+    LotteryRepository lotteryRepository;
 
-    @MockBean
-    JwtTokenUtil jwtTokenUtil;
+    private List<Lottery> lotteryList;
 
-    private LotteryDto lotteryDto;
+
+    @Test
+    void addNewLottery() {
+
+    }
 
     @BeforeEach
     public void setUp() {
-        lotteryDto = new LotteryDto(){
-            {setTitle("MegaLottery"); setBallotLength(10); setBallotPrice(10); setDescription("gfdsgfds");   }
-        };
-    }
-    @AfterEach
-    public void tearDown() {
-        lotteryDto =  null;
-    }
-/*
-    @Test
-    void addLottery() throws Exception{
+        lotteryList = new ArrayList<Lottery>();
+        lotteryList.add(new Lottery(){
+            {setTitle("MegaLottery1"); setBallotLength(10); setBallotPrice(10); setDescription("gfdsgfds");   }
+        });
 
-        RequestBuilder request = MockMvcRequestBuilders.get("/all").accept(MediaType.APPLICATION_JSON);
-        MvcResult result= mockMvc.perform(request).andReturn();
-        assertEquals("no" ,result.getResponse().getContentAsString());
+        lotteryList.add(new Lottery(){
+            {setTitle("MegaLottery2"); setBallotLength(5); setBallotPrice(5); setDescription("kjhgkj");   }
+        });
     }
-*/
     @Test
-    void editLottery() {
+    void getAllLottery() throws Exception {
+        when(lotteryRepository.findAll()).thenReturn((List<Lottery>) (lotteryList));
+        assertEquals(2, lotteryService.getAllLotteries().size());
     }
 
-    @Test
-    void getAllLotteries() {
-    }
-
-    @Test
-    void deleteLottery() {
-    }
 }

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lottery.main.domain.dto.UserDto;
 import com.lottery.main.domain.model.User;
-import com.lottery.main.domain.repository.UserRepository;
+import com.lottery.main.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -21,13 +21,12 @@ public class UserService {
     private ObjectMapper jacksonObjectMapper;
 
 
-
     public ResponseEntity<String> addUserToDb(UserDto userDto) throws  Exception {
         User user= jacksonObjectMapper.convertValue(userDto, new TypeReference<User>(){});
         Date date =new Date();
         user.setCreateDate(date);
         userRepository.save(user);
-        return ResponseEntity.ok("new User Saved Successfully");
+        return ResponseEntity.ok("New User Saved Successfully");
     }
 
     public ResponseEntity<String> blockUser (int userId) throws Exception
